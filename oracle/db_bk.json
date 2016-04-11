@@ -1,0 +1,11 @@
+{
+    "bkdir": "C:/Users/Administrator/bk",
+    "oracle": [
+        { "sid": "AAA", "user": "xx", "pwd": "xxx", "name": "AAA.dmp","temp_path": "D:/app/Administrator/admin/AAA/dpdump" },
+        { "sid": "BBB", "user": "xx", "pwd": "xxx", "name": "BBB.dmp","temp_path": "D:/app/Administrator/admin/BBB/dpdump" }
+    ],
+    "mysql": [
+        { "db_name": "CCC", "port": "3306", "user": "xx", "pwd": "xxx", "name": "CCC.sql" },
+        { "db_name": "DDD", "port": "3306", "user": "xx", "pwd": "xxx", "name": "DDD.sql" }
+    ]
+}
