@@ -1,0 +1,14 @@
+D:\Repositories
+AMAS             
+AMAS.GUI         
+AMAS.Service     
+AMAS.Web         
+design           
+FDAS.DC          
+FDAS.HX          
+KXNF             
+MetroUI          
+QAREngine        
+QAREngine.Project
+SMS              
+Weather          
