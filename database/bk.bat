@@ -1,3 +1,5 @@
+@echo off
 C:
-cd \
+cd C:\database
 python db_bk.py
+pause

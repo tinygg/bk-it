@@ -59,10 +59,11 @@ with open('db_bk.json','r') as f:
         file_name = now_str + '.' + mysql['name']
 
         ##execute expdp
-        p = subprocess.Popen("mysqldump --hex-blob -u%s -p%s -P%s %s > %s" % (mysql['user'],mysql['pwd'],mysql['port'],mysql['db_name'],file_name), stdout=subprocess.PIPE,shell=True)
+        host = mysql.has_key('host') and mysql['host'] or '127.0.0.1'
+        p = subprocess.Popen("mysqldump --hex-blob -u%s -p%s -h %s -P%s %s > %s" % (mysql['user'],mysql['pwd'],host,mysql['port'],mysql['db_name'],file_name), stdout=subprocess.PIPE,shell=True)
         (output,err) = p.communicate()
         ##print 'xxxx'+output
-        logger.debug('%s is dumping over,now moving to bkdir...' % mysql['db_name'])
+        logger.debug('mysql database:%s \t is dumping over,now moving to bkdir...' % mysql['db_name'])
         
         ##moving file mysql['temp_path'] + '/' +
         tmp_route = file_name
@@ -85,7 +86,7 @@ with open('db_bk.json','r') as f:
         p = subprocess.Popen("expdp %s/%s@%s dumpfile=%s" % (ora['user'],ora['pwd'],ora['sid'],file_name), stdout=subprocess.PIPE,shell=True)
         (output,err) = p.communicate()
         ##print 'xxxx'+output
-        logger.debug('%s is dumping over,now moving to bkdir...' % ora['sid'])
+        logger.debug('oracle database:%s \t is dumping over,now moving to bkdir...' % ora['sid'])
         
         ##moving file
         tmp_route = ora['temp_path'] + '/' + file_name
@@ -96,4 +97,4 @@ with open('db_bk.json','r') as f:
         else: 
             logger.debug('moving failed!')
 
-logger.debug('every thing backup over!' + now)
+    logger.debug('every thing backup over!')

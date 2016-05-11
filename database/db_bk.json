@@ -5,7 +5,7 @@
         { "sid": "BBB", "user": "xx", "pwd": "xxx", "name": "BBB.dmp","temp_path": "D:/app/Administrator/admin/BBB/dpdump" }
     ],
     "mysql": [
-        { "db_name": "CCC", "port": "3306", "user": "xx", "pwd": "xxx", "name": "CCC.sql" },
-        { "db_name": "DDD", "port": "3306", "user": "xx", "pwd": "xxx", "name": "DDD.sql" }
+        { "db_name": "CCC","host":"127.0.0.1", "port": "3306", "user": "xx", "pwd": "xxx", "name": "CCC.sql" },
+        { "db_name": "DDD","host":"127.0.0.1", "port": "3306", "user": "xx", "pwd": "xxx", "name": "DDD.sql" }
     ]
 }
