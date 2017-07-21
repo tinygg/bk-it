@@ -9,15 +9,15 @@
 - 执行svn.py即可
 
 
-## dump.txt 说明
-第一行填repo所在目录.
-后面每一行都是一个repository
+## dump.txt 说明  
+第一行填repo所在目录.  
+后面每一行都是一个repository  
 
 
 ##  小技巧
-cmd下cd到svn repo根目录
-dir /a:d 显示所有文件夹
-将文件夹部分粘贴至notepad ++，摁下  alt键+鼠标跨行拖动  即可跨行获取你需要的文件夹名列，正是我们需要的格式.
+cmd下cd到svn repo根目录  
+dir /a:d 显示所有文件夹  
+将文件夹部分粘贴至notepad ++，按下Alt键+鼠标跨行拖动  即可跨行获取你需要的文件夹名列，正是我们需要的格式.  
 
 ```
 Microsoft Windows [版本 10.0.10586]
@@ -75,10 +75,12 @@ xxxxxxxx
 xxxxxxxxxxxx
 ````
 
-##  
+#更新  
 
-更新:2017/07/21 
+2017/07/21   
+
 1.备份至指定目录的功能,dump.txt第二行指定。  
+
 2.文件SVN.xml是Windows定期执行的计划任务  
 
 
