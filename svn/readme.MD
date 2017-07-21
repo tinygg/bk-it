@@ -75,5 +75,6 @@ xxxxxxxx
 xxxxxxxxxxxx
 ````
 
-
+--
+更新:2017/07/21 备份至指定目录的功能,dump.txt第二行指定
 
