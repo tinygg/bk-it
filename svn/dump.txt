@@ -1,3 +1,5 @@
 D:\Repositories
+\\10.0.0.xx\zw
+Project1  
 Project1             
 Project2                 
