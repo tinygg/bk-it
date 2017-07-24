@@ -1,3 +1,5 @@
+#!/usr/bin/python
+#coding=utf-8
 import os
 import subprocess
 import datetime
@@ -9,13 +11,14 @@ projects = config.readlines()
 
 os.chdir(d)
 
-
+'''执行时间太长的话，目录会变化'''
+now = datetime.datetime.now()
+now_str = '%d.%d.%d.%d.%d' %(now.year,now.month,now.day,now.hour,now.minute)
+		
 '''foreach dump out'''
 for item in projects:
 	item = item.strip()
 	if item.count > 0:
-		now = datetime.datetime.now()
-		now_str = '%d.%d.%d.%d.%d' %(now.year,now.month,now.day,now.hour,now.minute)
 		os.mkdir(('%s\%s' % (to_dir, now_str)))
 		p = subprocess.Popen("svnadmin dump %s > %s\%s\%s.src.%s.dmp" % (item,to_dir,now_str,item,now_str), stdout=subprocess.PIPE, shell=True)
 		(output, err) = p.communicate()
