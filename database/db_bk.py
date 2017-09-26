@@ -53,6 +53,7 @@ with open('db_bk.json','r') as f:
     '''
         function:mysql loop execute
         example:mysqldump --hex-blob -uroot -proot -P3306 qar_db > 2016.1.22.00.qar_db.sql
+				mysqldump --hex-blob -uroot -proot --opt -R -h 127.0.0.1 -P3306 db_name > bk_file.db
     '''
     for mysql in json_obj['mysql']:
         ##file name
@@ -60,7 +61,7 @@ with open('db_bk.json','r') as f:
 
         ##execute expdp
         host = mysql.has_key('host') and mysql['host'] or '127.0.0.1'
-        p = subprocess.Popen("mysqldump --hex-blob -u%s -p%s -h %s -P%s %s > %s" % (mysql['user'],mysql['pwd'],host,mysql['port'],mysql['db_name'],file_name), stdout=subprocess.PIPE,shell=True)
+        p = subprocess.Popen("mysqldump --hex-blob -u%s -p%s --opt -R -h %s -P%s %s -R > %s" % (mysql['user'],mysql['pwd'],host,mysql['port'],mysql['db_name'],file_name), stdout=subprocess.PIPE,shell=True)
         (output,err) = p.communicate()
         ##print 'xxxx'+output
         logger.debug('mysql database:%s \t is dumping over,now moving to bkdir...' % mysql['db_name'])
