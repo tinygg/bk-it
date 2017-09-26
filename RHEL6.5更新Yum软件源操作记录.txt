@@ -1,0 +1,154 @@
+1.操作系统
+rhel-server-6.5-x86_64-dvd.iso 
+http://dl3.c5.sendfile.vip.xunlei.com:8000/rhel-server-6.5-x86_64-dvd.iso?key=ec0a6ea2ded033a1a761c9e4c54e533a&file_url=%2Fgdrive%2Fresource%2FBE%2F86%2FBE3EF55F238AC67755D66E246A51F2E841E87A86&file_type=0&authkey=FA357989FCE814C18436A31ED40A6ED2BEDBA278C2EB0D990BA9AAEFD6A38D01&exp_time=1389554844&from_uid=156303332&task_id=5954126317929952002&get_uid=1004078169&f=lixian.vip.xunlei.com&reduce_cdn=1&fid=VUZzEeuERcCsIA3ZXnqt77U/V8cAALDlAAAAAL4+9V8jisZ3VdZuJGpR8uhB6HqG&mid=666&threshold=150&tid=CE98EA679F7A4A9A718B9426CAA3D233&srcid=7&verno=1
+
+2.RHEL6.5 配置网络yum源
+################################卸载本来的yum程序
+rpm -qa | grep yum|xargs rpm -e --nodeps
+rpm -aq|grep python-iniparse|xargs rpm -e --nodeps
+
+###################################下载rpm包
+wget http://mirrors.aliyun.com/centos/6/os/x86_64/Packages/python-iniparse-0.3.1-2.1.el6.noarch.rpm http://mirrors.aliyun.com/centos/6/os/x86_64/Packages/yum-metadata-parser-1.1.2-16.el6.x86_64.rpm http://mirrors.aliyun.com/centos/6/os/x86_64/Packages/yum-3.2.29-81.el6.centos.noarch.rpm http://mirrors.aliyun.com/centos/6/os/x86_64/Packages/yum-plugin-fastestmirror-1.1.30-40.el6.noarch.rpm http://mirrors.aliyun.com/centos/6/os/x86_64/Packages/python-urlgrabber-3.9.1-11.el6.noarch.rpm
+
+##################################依次安装
+rpm -ivh python-iniparse-0.3.1-2.1.el6.noarch.rpm
+rpm -ivh yum-metadata-parser-1.1.2-16.el6.x86_64.rpm
+###安装之前先卸载老的python-urlgrabber
+rpm -ivh python-urlgrabber-3.9.1-11.el6.noarch.rpm
+rpm -ivh yum-3.2.29-81.el6.centos.noarch.rpm yum-plugin-fastestmirror-1.1.30-40.el6.noarch.rpm 
+---------------------------------------------------------
+首先通过  rpm -q <关键字> 可以查询到rpm包的名字
+然后 调用 rpm -e <包的名字> 删除特定rpm包
+如果遇到依赖，无法删除，使用 rpm -e --nodeps <包的名字> 不检查依赖，直接删除rpm包
+如果恰好有多个包叫同样的名字，使用 rpm -e --allmatches --nodeps <包的名字> 删除所有相同名字的包， 并忽略依赖
+
+###################################下载repo文件
+cd /etc/yum.repos.d/
+rm -rf *
+wget /etc/yum.repos.d/ http://mirrors.aliyun.com/repo/Centos-6.repo
+mv Centos-6.repo rhel-source.repo
+sed -i 's/$releasever/6/g' rhel-source.repo
+
+
+###################################最后的清理
+清理yum缓存
+
+yum clear all
+----------------虽然一直会提示 #This system is not registered to Red Hat Subscription Management. You can use subscription-manager to register#
+----------------但是是成功的！！！
+----------------下面的命令均可执行
+
+将服务器上的软件包信息缓存到本地，以提高速度
+
+yum makecache
+
+测试安装
+yum install httpd -y
+
+--------------------------------------------
+[root@localhost yum.repos.d]# yum install httpd -y
+Loaded plugins: fastestmirror, product-id, subscription-manager
+This system is not registered to Red Hat Subscription Management. You can use subscription-manager to register.
+Setting up Install Process
+Determining fastest mirrors
+ * base: mirrors.aliyun.com
+ * extras: mirrors.aliyun.com
+ * updates: mirrors.aliyun.com
+Resolving Dependencies
+--> Running transaction check
+---> Package httpd.x86_64 0:2.2.15-29.el6_4 will be updated
+---> Package httpd.x86_64 0:2.2.15-60.el6.centos.5 will be an update
+--> Processing Dependency: httpd-tools = 2.2.15-60.el6.centos.5 for package: httpd-2.2.15-60.el6.centos.5.x86_64
+--> Running transaction check
+---> Package httpd-tools.x86_64 0:2.2.15-29.el6_4 will be updated
+---> Package httpd-tools.x86_64 0:2.2.15-60.el6.centos.5 will be an update
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+================================================================================
+ Package          Arch        Version                        Repository    Size
+================================================================================
+Updating:
+ httpd            x86_64      2.2.15-60.el6.centos.5         updates      836 k
+Updating for dependencies:
+ httpd-tools      x86_64      2.2.15-60.el6.centos.5         updates       80 k
+
+Transaction Summary
+================================================================================
+Upgrade       2 Package(s)
+
+Total download size: 916 k
+Downloading Packages:
+(1/2): httpd-2.2.15-60.el6.centos.5.x86_64.rpm           | 836 kB     00:00     
+(2/2): httpd-tools-2.2.15-60.el6.centos.5.x86_64.rpm     |  80 kB     00:00     
+--------------------------------------------------------------------------------
+Total                                           1.1 MB/s | 916 kB     00:00     
+warning: rpmts_HdrFromFdno: Header V3 RSA/SHA1 Signature, key ID c105b9de: NOKEY
+Retrieving key from http://mirrors.aliyun.com/centos/RPM-GPG-KEY-CentOS-6
+Importing GPG key 0xC105B9DE:
+ Userid: "CentOS-6 Key (CentOS 6 Official Signing Key) <centos-6-key@centos.org>"
+ From  : http://mirrors.aliyun.com/centos/RPM-GPG-KEY-CentOS-6
+Running rpm_check_debug
+Running Transaction Test
+Transaction Test Succeeded
+Running Transaction
+Warning: RPMDB altered outside of yum.
+** Found 3 pre-existing rpmdb problem(s), 'yum check' output follows:
+PackageKit-0.5.8-21.el6.x86_64 has missing requires of PackageKit-yum = ('0', '0.5.8', '21.el6')
+PackageKit-0.5.8-21.el6.x86_64 has missing requires of PackageKit-yum-plugin = ('0', '0.5.8', '21.el6')
+rhn-check-1.0.0.1-16.el6.noarch has missing requires of yum-rhn-plugin >= ('0', '0.9.1', '35')
+  Updating   : httpd-tools-2.2.15-60.el6.centos.5.x86_64                    1/4 
+  Updating   : httpd-2.2.15-60.el6.centos.5.x86_64                          2/4 
+  Cleanup    : httpd-2.2.15-29.el6_4.x86_64                                 3/4 
+  Cleanup    : httpd-tools-2.2.15-29.el6_4.x86_64                           4/4 
+  Verifying  : httpd-2.2.15-60.el6.centos.5.x86_64                          1/4 
+  Verifying  : httpd-tools-2.2.15-60.el6.centos.5.x86_64                    2/4 
+  Verifying  : httpd-2.2.15-29.el6_4.x86_64                                 3/4 
+  Verifying  : httpd-tools-2.2.15-29.el6_4.x86_64                           4/4 
+
+Updated:
+  httpd.x86_64 0:2.2.15-60.el6.centos.5                                         
+
+Dependency Updated:
+  httpd-tools.x86_64 0:2.2.15-60.el6.centos.5                                   
+
+Complete!
+-----------------------------------------------------------------------------------------------------
+OK!!!!
+
+3.安装指定版本
+假设这里是我们想安装的是prce ，输入：
+#yum list prce
+输出：
+pcre-7.8-6.el6.i686:Perl-compatibleregularexpressionlibrary
+pcre-7.8-6.el6.x86_64:Perl-compatibleregularexpressionlibrary
+pcre-7.8-6.el6.x86_64:Perl-compatibleregularexpressionlibrary
+
+找到你要安装的版本的完整的名字，这里安装pcre-7.8-6.el6.i686，输入：
+#yum  install  pcre-7.8-6.el6.i686 -y
+安装完后，就是检查pcre的版本了，输入：
+# rpm -qa | grep pcre
+就可以看到你安装的版本是不是你要的了。
+
+4.安装卸载
+yum 安装多个 或卸载多个软件包
+安装多个类似软件时
+yum -y install httpd*
+安装多个非类似软件时
+yum -y install httpd php php-gd mysql 
+
+卸载一个软件时 
+yum -y remove httpd
+卸载多个相类似的软件
+yum -y remove httpd*
+卸载多个非类似软件时
+yum -y remove httpd php php-gd mysql
+
+
+
+
+
+
+
+
